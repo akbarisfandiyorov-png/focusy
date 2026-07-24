@@ -714,7 +714,7 @@
                 <a href="https://play.google.com/store/apps/details?id=com.focusy.productivity" class="flex items-center gap-3 glass-panel text-white font-extrabold px-7 py-4 rounded-2xl hover:bg-white/10 transition-all border border-white/20">
                     <i data-lucide="download" class="w-6 h-6 text-neonBlue"></i>
                     <div class="text-left leading-none">
-                        <div class="text-[9px] uppercase font-bold text-gray-400">BEVOSITA YUKLASH</div>
+                        <div class="text-[9px] uppercase font-bold text-gray-400" data-i18n="apk_direct_label">DIRECT DOWNLOAD</div>
                         <div class="text-xs font-black">Android APK File</div>
                     </div>
                 </a>
@@ -731,6 +731,7 @@
                 <div>
                     <div class="text-sm font-extrabold text-white" data-i18n="ios_cta_title">App Story</div>
                     <div class="text-xs text-gray-300" data-i18n="ios_cta_subtitle">iOS version coming soon — leave your interest form.</div>
+                        <div class="text-xs text-gray-400 mt-1">Founder: <a href="mailto:boburashurov311@gmail.com" class="underline">boburashurov311@gmail.com</a></div>
                 </div>
                 <div class="flex items-center gap-3">
                     <button onclick="openIosModal()" class="px-4 py-2 rounded-xl bg-neonPurple text-white font-bold text-sm flex items-center gap-2">
@@ -844,7 +845,7 @@
 
             const uploadedLink = document.getElementById('uploaded-link');
             uploadedLink.href = blobUrl;
-            uploadedLink.textContent = file.name || 'Yuklangan rasm';
+            uploadedLink.textContent = file.name || 'Uploaded image';
             uploadedLink.classList.remove('hidden');
 
             const copyBtn = document.getElementById('copy-link-btn');
@@ -882,6 +883,7 @@
                 hero_subtitle: "Giyandandiruvchi ilovalarni bloklang, chalg'ishlarni yo'qoting va mukammal diqqat rejimiga kiring.",
                 hero_watch_demo: "Videoni ko'rish", stat_downloads_label: "Faol Yuklanmalar", stat_sessions_label: "Diqqat Seanslari", stat_rating_label: "Foydalanuvchi Bahosi",
                 custom_screen_title: "📸 Telefon Ichiga Rasm Qo'yish", upload_btn: "Kompyuterdan Rasm Yuklash",
+                apk_direct_label: "BEVOSITA YUKLASH",
                 showcase_badge: "Interaktiv Tajriba", showcase_title: "Ilova Ekranlarini O'rganing", tab_home: "Asosiy", tab_timer: "Taymer",
                 tab_planner: "Rejalashtirgich", tab_stats: "Statistika", tab_leaderboard: "Reyting", why_badge: "Fan Va Yechim",
                 why_title: "Nega Oddiy Bloklovchilar Ishlamaydi?", why_card1_title: "Insonlar Vaqt Yo'qotishi",
@@ -937,6 +939,7 @@
                 hero_subtitle: "Block addictions, crush distractions, and unlock deep work flow states with cinematic precision.",
                 hero_watch_demo: "Watch Demo", stat_downloads_label: "Active Downloads", stat_sessions_label: "Focus Sessions", stat_rating_label: "User Rating",
                 custom_screen_title: "📸 Custom App Screen Preview", upload_btn: "Upload Your App Screenshot",
+                apk_direct_label: "DIRECT DOWNLOAD",
                 showcase_badge: "Interactive Experience", showcase_title: "Explore App Screens", tab_home: "Home", tab_timer: "Timer",
                 tab_planner: "Planner", tab_stats: "Statistics", tab_leaderboard: "Leaderboard", why_badge: "The Science & Solution",
                 why_title: "Why Traditional Blockers Fail", why_card1_title: "Why People Waste Time",
@@ -992,6 +995,7 @@
                 hero_subtitle: "Блокируйте зависимости, устраняйте отвлекающие факторы и входите в состояние глубокой работы.",
                 hero_watch_demo: "Смотреть Демо", stat_downloads_label: "Активных Скачиваний", stat_sessions_label: "Сессий Фокуса", stat_rating_label: "Оценка Пользователей",
                 custom_screen_title: "📸 Предпросмотр Своего Экрана", upload_btn: "Загрузить Скриншот (Upload)",
+                apk_direct_label: "ПРЯМОЕ СКАЧИВАНИЕ",
                 showcase_badge: "Интерактивный Опыт", showcase_title: "Экраны Приложения", tab_home: "Главная", tab_timer: "Таймер",
                 tab_planner: "Планер", tab_stats: "Статистика", tab_leaderboard: "Рейтинг", why_badge: "Наука и Решение",
                 why_title: "Почему Обычные Блокировщики Не Работают", why_card1_title: "Потеря Времени",
@@ -1043,6 +1047,12 @@
         };
 
         let currentLang = 'en';
+
+        // Ensure UI renders in the selected language on initial load
+        window.addEventListener('DOMContentLoaded', () => {
+            try { setLanguage(currentLang); } catch (e) { console.error(e); }
+            try { renderSubmissions(); } catch (e) {}
+        });
 
         function toggleLangMenu() {
             document.getElementById('lang-dropdown').classList.toggle('hidden');

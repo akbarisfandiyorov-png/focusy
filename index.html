@@ -719,36 +719,27 @@
                     </div>
                 </a>
             </div>
-        </div>
-    </section>
-
-    <!-- ==========================================
-         iOS Interest CTA (before footer)
-    =========================================== -->
-    <section id="ios-cta" class="py-8">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="glass-card p-6 rounded-2xl border border-white/10 flex items-center justify-between gap-4">
-                <div>
-                    <div class="text-sm font-extrabold text-white" data-i18n="ios_cta_title">App Story</div>
-                    <div class="text-xs text-gray-300" data-i18n="ios_cta_subtitle">iOS version coming soon — leave your interest form.</div>
+            
+            <!-- Embedded iOS CTA + Public Submissions (moved into download card) -->
+            <div class="mt-8 max-w-3xl mx-auto text-left">
+                <div class="glass-card p-4 rounded-2xl border border-white/5 flex items-center justify-between gap-4">
+                    <div>
+                        <div class="text-sm font-extrabold text-white" data-i18n="ios_cta_title">App Story</div>
+                        <div class="text-xs text-gray-300" data-i18n="ios_cta_subtitle">iOS version coming soon — leave your interest form.</div>
                         <div class="text-xs text-gray-400 mt-1">Founder: <a href="mailto:boburashurov311@gmail.com" class="underline">boburashurov311@gmail.com</a></div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button onclick="openIosModal()" class="px-4 py-2 rounded-xl bg-neonPurple text-white font-bold text-sm flex items-center gap-2">
+                            <i data-lucide="apple" class="w-4 h-4"></i>
+                            <span data-i18n="ios_cta_button">iOS — Coming Soon</span>
+                        </button>
+                    </div>
                 </div>
-                <div class="flex items-center gap-3">
-                    <button onclick="openIosModal()" class="px-4 py-2 rounded-xl bg-neonPurple text-white font-bold text-sm flex items-center gap-2">
-                        <i data-lucide="apple" class="w-4 h-4"></i>
-                        <span data-i18n="ios_cta_button">iOS — Coming Soon</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Public submissions list -->
-    <section id="submissions-list" class="py-8 hidden">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="glass-card p-6 rounded-2xl border border-white/10">
-                <h4 class="text-lg font-bold text-white mb-3" data-i18n="ios_list_title">iOS Interest Applications</h4>
-                <div id="submissions-container" class="space-y-3 text-sm text-gray-200"></div>
+                <div class="mt-4 p-4 rounded-2xl bg-black/20 border border-white/5">
+                    <h4 class="text-sm font-bold text-white mb-2" data-i18n="ios_list_title">iOS Interest Applications</h4>
+                    <div id="submissions-container" class="space-y-3 text-sm text-gray-200"></div>
+                </div>
             </div>
         </div>
     </section>

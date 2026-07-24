@@ -436,7 +436,7 @@
                         <span class="text-xs font-mono font-bold text-neonPurple px-3 py-1 rounded-lg bg-neonPurple/10">18:00</span>
                     </div>
 
-                    <button onclick="openFeatureModal('18 Daqiqa Qoidasi', '18 daqiqalik qoida hissiy istaklarni jilovlaydi. Ruhiy tadqiqotlar shuni ko\'rsatadiki, ijtimoiy tarmoqlarni ochish xohishi 10-15 daqiqa ichida o\'tib ketadi.')" class="flex items-center gap-2 text-xs font-extrabold text-neonPurple hover:text-neonBlue transition-colors w-max">
+                    <button onclick="openFeatureModal('f1_title','f1_desc')" class="flex items-center gap-2 text-xs font-extrabold text-neonPurple hover:text-neonBlue transition-colors w-max">
                         <span data-i18n="learn_more">Batafsil</span>
                         <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                     </button>
@@ -460,7 +460,7 @@
                         </div>
                     </div>
 
-                    <button onclick="openFeatureModal('Chuqur Ish Taymeri', '15 daqiqadan 180 daqiqagacha bo\'lgan maxsus diqqat seanslari. Bunga tinchlantiruvchi braun noise audio va qat\'iy bloklash kiritilgan.')" class="flex items-center gap-2 text-xs font-extrabold text-neonPurple hover:text-neonBlue transition-colors w-max">
+                    <button onclick="openFeatureModal('f2_title','f2_desc')" class="flex items-center gap-2 text-xs font-extrabold text-neonPurple hover:text-neonBlue transition-colors w-max">
                         <span data-i18n="learn_more">Batafsil</span>
                         <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                     </button>
@@ -487,7 +487,7 @@
                         </div>
                     </div>
 
-                    <button onclick="openFeatureModal('Ilovalarni Bloklash', 'Android maxsus ruxsatlaridan foydalanib, chalg\'ituvchi ilova ochilishi bilan uni 5 millisekund ichida yopadi.')" class="flex items-center gap-2 text-xs font-extrabold text-neonPurple hover:text-neonBlue transition-colors w-max">
+                    <button onclick="openFeatureModal('f3_title','f3_desc')" class="flex items-center gap-2 text-xs font-extrabold text-neonPurple hover:text-neonBlue transition-colors w-max">
                         <span data-i18n="learn_more">Batafsil</span>
                         <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                     </button>
@@ -508,7 +508,7 @@
                         <span class="text-xs font-extrabold text-rose-400">-50 Olov 🔥</span>
                     </div>
 
-                    <button onclick="openFeatureModal('Jarima Ekrani', 'Seansni barvaqt yopish uchun 50 Olov balini yo'qotishga rozilik berishingiz kerak. Bu psixologik to'siq sizni chalg'ishdan saqlaydi.')" class="flex items-center gap-2 text-xs font-extrabold text-neonPurple hover:text-neonBlue transition-colors w-max">
+                    <button onclick="openFeatureModal('f4_title','f4_desc')" class="flex items-center gap-2 text-xs font-extrabold text-neonPurple hover:text-neonBlue transition-colors w-max">
                         <span data-i18n="learn_more">Batafsil</span>
                         <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                     </button>
@@ -529,7 +529,7 @@
                         <span class="text-indigo-400 font-bold">09:00 - 17:00</span>
                     </div>
 
-                    <button onclick="openFeatureModal('Aqlli Rejalashtirgich', 'Haftalik ish jadvalingizni sozlang. Ish vaqti boshlanishi bilan Focusy ilovalarni avtomatik ravishda bloklaydi.')" class="flex items-center gap-2 text-xs font-extrabold text-neonPurple hover:text-neonBlue transition-colors w-max">
+                    <button onclick="openFeatureModal('f5_title','f5_desc')" class="flex items-center gap-2 text-xs font-extrabold text-neonPurple hover:text-neonBlue transition-colors w-max">
                         <span data-i18n="learn_more">Batafsil</span>
                         <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                     </button>
@@ -550,7 +550,7 @@
                         <span class="text-emerald-400 font-extrabold">14 Kun 🔥</span>
                     </div>
 
-                    <button onclick="openFeatureModal('Kunlik Seriya', 'Har kuni diqqat seanslarini bajarib, seriyangizni saqlang va global reytingda yuqoriga ko\'tariling.')" class="flex items-center gap-2 text-xs font-extrabold text-neonPurple hover:text-neonBlue transition-colors w-max">
+                    <button onclick="openFeatureModal('f6_title','f6_desc')" class="flex items-center gap-2 text-xs font-extrabold text-neonPurple hover:text-neonBlue transition-colors w-max">
                         <span data-i18n="learn_more">Batafsil</span>
                         <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                     </button>
@@ -722,6 +722,36 @@
         </div>
     </section>
 
+    <!-- ==========================================
+         iOS Interest CTA (before footer)
+    =========================================== -->
+    <section id="ios-cta" class="py-8">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="glass-card p-6 rounded-2xl border border-white/10 flex items-center justify-between gap-4">
+                <div>
+                    <div class="text-sm font-extrabold text-white" data-i18n="ios_cta_title">App Story</div>
+                    <div class="text-xs text-gray-300" data-i18n="ios_cta_subtitle">iOS version coming soon — leave your interest form.</div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="openIosModal()" class="px-4 py-2 rounded-xl bg-neonPurple text-white font-bold text-sm flex items-center gap-2">
+                        <i data-lucide="apple" class="w-4 h-4"></i>
+                        <span data-i18n="ios_cta_button">iOS — Coming Soon</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Public submissions list -->
+    <section id="submissions-list" class="py-8 hidden">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="glass-card p-6 rounded-2xl border border-white/10">
+                <h4 class="text-lg font-bold text-white mb-3" data-i18n="ios_list_title">iOS Interest Applications</h4>
+                <div id="submissions-container" class="space-y-3 text-sm text-gray-200"></div>
+            </div>
+        </div>
+    </section>
+
 
     <!-- ==========================================
          FOOTER
@@ -729,14 +759,16 @@
     <footer class="py-12 border-t border-white/10 text-center text-xs text-gray-500">
         <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="font-bold text-white text-base">Focusy<span class="text-neonPurple">.</span></div>
-            <div>© 2026 Focusy Inc. Android uchun tayyorlangan.</div>
+            <div>© 2026 Focusy Inc. — Android build.</div>
             <div class="flex gap-4">
-                <a href="#" class="hover:text-white">Muxfiylik</a>
-                <a href="#" class="hover:text-white">Shartlar</a>
-                <a href="#" class="hover:text-white">Yordam</a>
+                <a href="#" class="hover:text-white" data-i18n="footer_privacy">Privacy</a>
+                <a href="#" class="hover:text-white" data-i18n="footer_terms">Terms</a>
+                <a href="#" class="hover:text-white" data-i18n="footer_support">Support</a>
             </div>
         </div>
     </footer>
+
+    
 
 
     <!-- ==========================================
@@ -747,8 +779,8 @@
             <button onclick="closeFeatureModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
                 <i data-lucide="x" class="w-5 h-5"></i>
             </button>
-            <h3 class="text-xl font-bold text-white mb-3" id="modal-title">Sarlavha</h3>
-            <p class="text-xs text-gray-300 leading-relaxed mb-6" id="modal-desc">Batafsil ma'lumot.</p>
+            <h3 class="text-xl font-bold text-white mb-3" id="modal-title" data-i18n="feature_modal_title_default">Sarlavha</h3>
+            <p class="text-xs text-gray-300 leading-relaxed mb-6" id="modal-desc" data-i18n="feature_modal_desc_default">Batafsil ma'lumot.</p>
             <button onclick="closeFeatureModal()" class="w-full py-3 rounded-xl bg-neonPurple text-white font-bold text-xs">Yopish</button>
         </div>
     </div>
@@ -764,6 +796,28 @@
                 <iframe id="video-iframe" class="w-full h-full rounded-2xl bg-black hidden" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 <div id="video-placeholder" class="text-gray-400 text-xs">[ Cinematic Video Demo ]</div>
             </div>
+        </div>
+    </div>
+
+    <!-- iOS Interest Modal -->
+    <div id="ios-modal" class="fixed inset-0 z-60 bg-black/70 hidden items-center justify-center p-6">
+        <div class="glass-card max-w-md w-full p-6 rounded-3xl border border-white/20 relative">
+            <button onclick="closeIosModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <h3 class="text-lg font-bold text-white mb-2"><i data-lucide="apple" class="w-4 h-4 inline-block mr-2"></i><span data-i18n="ios_modal_title">iOS — Coming Soon</span></h3>
+            <p class="text-xs text-gray-300 mb-4">Interested in the iOS release? Leave your business name and email — we'll notify you.</p>
+
+            <div id="ios-form">
+                <input id="ios-business" type="text" placeholder="Business or name" data-i18n-placeholder="ios_business_placeholder" class="w-full px-4 py-3 rounded-xl bg-black/40 text-white border border-white/10 mb-3 outline-none">
+                <input id="ios-email" type="email" placeholder="Your email (Gmail preferred)" data-i18n-placeholder="ios_email_placeholder" class="w-full px-4 py-3 rounded-xl bg-black/40 text-white border border-white/10 mb-3 outline-none">
+                <div class="flex gap-2">
+                    <button onclick="submitIosInterest()" class="px-4 py-2 rounded-xl bg-neonBlue text-white font-bold" data-i18n="ios_submit_btn">Submit interest</button>
+                    <button onclick="closeIosModal()" class="px-4 py-2 rounded-xl bg-gray-700 text-white">Cancel</button>
+                </div>
+            </div>
+
+            <div id="ios-thanks" class="hidden text-center text-sm text-neonBlue mt-4" data-i18n="ios_thanks">Thanks — you're on the list. We'll contact you soon.</div>
         </div>
     </div>
 
@@ -804,18 +858,22 @@
 
         function copyUploadLink() {
             const uploadedLink = document.getElementById('uploaded-link');
-            if (!uploadedLink || !uploadedLink.href) return alert('Hech nima yuklanmadi.');
+            const dict = translations[currentLang] || {};
+            const nothingMsg = dict['alert_nothing_uploaded'] || 'Nothing uploaded.';
+            const copyFailed = dict['alert_copy_failed'] || 'Unable to copy URL.';
+            const copyDone = dict['copy_done'] || 'Copied';
+            if (!uploadedLink || !uploadedLink.href) return alert(nothingMsg);
             navigator.clipboard.writeText(uploadedLink.href).then(() => {
                 const btn = document.getElementById('copy-link-btn');
                 const old = btn.textContent;
-                btn.textContent = 'Nusxa olindi';
+                btn.textContent = copyDone;
                 setTimeout(() => btn.textContent = old, 1500);
             }).catch(() => {
-                alert('Manzilni nusxalash uddalanmadi.');
+                alert(copyFailed);
             });
         }
 
-        // 2. Multi-Language Switcher (Default: O'zbekcha)
+        // 2. Multi-Language Switcher (Default)
         const translations = {
             uz: {
                 nav_home: "Bosh sahifa", nav_showcase: "Ekrani", nav_why: "Nega Focusy", nav_features: "Imkoniyatlar",
@@ -842,6 +900,31 @@
                 step3_desc: "Bloklash avtomatik yoqiladi", step4_title: "Olov Qozoning", step4_desc: "Mukofot oling va darajangizni oshiring",
                 demo_badge: "Interaktiv Simulyator", demo_title: "10 Soniyalik Sinov Seansi", demo_ready: "Sinashga tayyormisiz? Boshlash tugmasini bosing.",
                 demo_btn: "10s Sinovni Boshlash", rank_badge: "Chempionlar", rank_title: "Global Reyting", faq_title: "Ko'p Beriladigan Savollar",
+                demo_status_init: "⚡ Qalqon aktivlashdi! Bildirishnomalar o'chirildi...",
+                demo_status_blocked: "🚫 Instagram-ni ochish urinishi bloklandi!",
+                demo_status_delay: "🔥 18-daqiqalik kechiktirish rejimi ishlamoqda.",
+                demo_status_done: "🎉 Seans yakunlandi! +25 Olov taqdirlandi!",
+                video_loading: "Video yuklanmoqda...",
+                youtube_invalid: "YouTube havolasi noto‘g‘ri.",
+                video_not_found: "Video topilmadi yoki brauzer uni ocholmadi. assets/demo.mp4 ni joylaganingizni tekshiring.",
+                alert_nothing_uploaded: "Hech nima yuklanmadi.",
+                alert_copy_failed: "Manzilni nusxalash uddalanmadi.",
+                copy_done: "Nusxa olindi",
+                feature_modal_title_default: "Sarlavha",
+                feature_modal_desc_default: "Batafsil ma'lumot.",
+                ios_cta_title: "App Story",
+                ios_cta_subtitle: "iOS versiyasi tez orada — qiziqsangiz ariza qoldiring.",
+                ios_cta_button: "iOS — Tez kunda",
+                ios_list_title: "iOS qiziqish arizalari",
+                footer_privacy: "Maxfiylik",
+                footer_terms: "Shartlar",
+                footer_support: "Yordam",
+                ios_modal_title: "iOS — Tez kunda",
+                ios_business_placeholder: "Korxona yoki ism",
+                ios_email_placeholder: "Sizning email (Gmail tavsiya etiladi)",
+                ios_submit_btn: "Ariza qoldirish",
+                ios_thanks: "Rahmat — siz ro'yxatga olindingiz. Tez orada bog'lanamiz.",
+                ios_invalid_email: "Iltimos, to‘g‘ri email kiriting.",
                 faq1_q: "Focusy nima va u qanday ishlaydi?", faq1_a: "Focusy — diqqatni jamlash va telefon qaramligidan xalos bo'lish uchun mo'ljallangan ilova.",
                 faq2_q: "18 daqiqa qoidasi qanday ishlaydi?", faq2_a: "Ilovani ochishni so'raganingizda 18 daqiqalik kutish vaqti qo'yiladi.",
                 faq3_q: "Mening ma'lumotlarim xavfsizda bo'ladimi?", faq3_a: "Ha! Focusy barcha ma'lumotlarni faqat telefoningizda saqlaydi.",
@@ -872,6 +955,31 @@
                 step3_desc: "Shield automatically activates", step4_title: "Earn Flames", step4_desc: "Collect rewards and level up",
                 demo_badge: "Live Interactive Simulator", demo_title: "Test 10-Second Focus Session", demo_ready: "Ready to test? Click start below.",
                 demo_btn: "Start 10s Demo", rank_badge: "Champions", rank_title: "Global Leaderboard", faq_title: "Frequently Asked Questions",
+                demo_status_init: "⚡ Shield activated — notifications muted...",
+                demo_status_blocked: "🚫 Attempt to open Instagram blocked!",
+                demo_status_delay: "🔥 18-minute delay engaged.",
+                demo_status_done: "🎉 Session complete! +25 Flame awarded!",
+                video_loading: "Video loading...",
+                youtube_invalid: "YouTube link seems invalid.",
+                video_not_found: "Video not found or unsupported. Ensure assets/demo.mp4 exists.",
+                alert_nothing_uploaded: "Nothing uploaded.",
+                alert_copy_failed: "Unable to copy URL.",
+                copy_done: "Copied",
+                feature_modal_title_default: "Title",
+                feature_modal_desc_default: "Detailed information.",
+                ios_cta_title: "App Story",
+                ios_cta_subtitle: "iOS version coming soon — leave your interest form.",
+                ios_cta_button: "iOS — Coming Soon",
+                ios_list_title: "iOS Interest Applications",
+                footer_privacy: "Privacy",
+                footer_terms: "Terms",
+                footer_support: "Support",
+                ios_modal_title: "iOS — Coming Soon",
+                ios_business_placeholder: "Business or name",
+                ios_email_placeholder: "Your email (Gmail preferred)",
+                ios_submit_btn: "Submit interest",
+                ios_thanks: "Thanks — you're on the list. We'll contact you soon.",
+                ios_invalid_email: "Please enter a valid email.",
                 faq1_q: "What is Focusy?", faq1_a: "Focusy is a next-generation application designed to block social addictions.",
                 faq2_q: "How does the 18-minute rule work?", faq2_a: "It imposes an 18-minute delay requirement when you try to open blocked apps.",
                 faq3_q: "Is my personal data safe?", faq3_a: "Yes! Focusy operates 100% locally on your device with strict privacy protection.",
@@ -902,12 +1010,39 @@
                 step3_desc: "Блокировка включится автоматически", step4_title: "Получайте Очки", step4_desc: "Зарабатывайте Flame и повышайте уровень",
                 demo_badge: "Интерактивный Симулятор", demo_title: "10-Секундный Тестовый Сеанс", demo_ready: "Готовы протестировать? Нажмите старт ниже.",
                 demo_btn: "Запустить 10с Демо", rank_badge: "Чемпионы", rank_title: "Мировой Рейтинг", faq_title: "Часто Задаваемые Вопросы",
+                demo_status_init: "⚡ Щит активирован — уведомления отключены...",
+                demo_status_blocked: "🚫 Попытка открыть Instagram заблокирована!",
+                demo_status_delay: "🔥 Включен 18-минутный таймер.",
+                demo_status_done: "🎉 Сеанс завершён! +25 Flame начислено!",
+                video_loading: "Видео загружается...",
+                youtube_invalid: "Ссылка YouTube некорректна.",
+                video_not_found: "Видео не найдено или не поддерживается. Проверьте assets/demo.mp4.",
+                alert_nothing_uploaded: "Ничего не загружено.",
+                alert_copy_failed: "Не удалось скопировать ссылку.",
+                copy_done: "Скопировано",
+                feature_modal_title_default: "Заголовок",
+                feature_modal_desc_default: "Подробная информация.",
+                ios_cta_title: "История приложения",
+                ios_cta_subtitle: "iOS версия скоро — оставьте заявку.",
+                ios_cta_button: "iOS — Скоро",
+                ios_list_title: "Заявки на iOS",
+                footer_privacy: "Конфиденциальность",
+                footer_terms: "Условия",
+                footer_support: "Поддержка",
+                ios_modal_title: "iOS — Скоро",
+                ios_business_placeholder: "Компания или имя",
+                ios_email_placeholder: "Ваш email (желательно Gmail)",
+                ios_submit_btn: "Оставить заявку",
+                ios_thanks: "Спасибо — вы в списке. Мы свяжемся с вами.",
+                ios_invalid_email: "Пожалуйста, введите корректный email.",
                 faq1_q: "Что такое Focusy?", faq1_a: "Focusy — это приложение нового поколения для устранения зависимости от смартфона.",
                 faq2_q: "Как работает правило 18 минут?", faq2_a: "При попытке открыть приложение включается 18-минутный таймер задержки.",
                 faq3_q: "Безопасны ли мои данные?", faq3_a: "Да! Focusy работает 100% локально на вашем устройстве без передачи данных.",
                 dl_title: "Готовы Изменить Свою Жизнь?", dl_subtitle: "Скачайте Focusy сегодня и верните тысячи часов концентрации."
             }
         };
+
+        let currentLang = 'en';
 
         function toggleLangMenu() {
             document.getElementById('lang-dropdown').classList.toggle('hidden');
@@ -928,6 +1063,12 @@
                     el.textContent = dict[key];
                 }
             });
+            // placeholders (inputs)
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (dict[key]) el.placeholder = dict[key];
+            });
+            currentLang = lang;
         }
 
         // 3. Carousel Showcase Switcher
@@ -962,9 +1103,19 @@
         }
 
         // 4. Modals Engine
+        let currentFeatureModalKeys = { title: 'feature_modal_title_default', desc: 'feature_modal_desc_default' };
         function openFeatureModal(title, desc) {
-            document.getElementById('modal-title').textContent = title;
-            document.getElementById('modal-desc').textContent = desc;
+            const dict = translations[currentLang] || {};
+            const t = dict[title] || title;
+            const d = dict[desc] || desc;
+            const titleEl = document.getElementById('modal-title');
+            const descEl = document.getElementById('modal-desc');
+            // store keys so setLanguage can re-render when language changes
+            titleEl.setAttribute('data-i18n', title);
+            descEl.setAttribute('data-i18n', desc);
+            currentFeatureModalKeys = { title, desc };
+            titleEl.textContent = t;
+            descEl.textContent = d;
             document.getElementById('feature-modal').classList.remove('hidden');
         }
 
@@ -1012,7 +1163,7 @@
                         iframe.src = embed;
                         iframe.classList.remove('hidden');
                     } else {
-                        document.getElementById('video-placeholder').textContent = 'YouTube havolasi noto‘g‘ri.';
+                        document.getElementById('video-placeholder').textContent = (translations[currentLang] && translations[currentLang]['youtube_invalid']) || 'YouTube link seems invalid.';
                         document.getElementById('video-placeholder').classList.remove('hidden');
                     }
                 } else {
@@ -1020,12 +1171,12 @@
                     videoEl.src = url;
                     videoEl.preload = 'metadata';
                     // show placeholder until we know it's loadable
-                    placeholder.textContent = 'Video yuklanmoqda...';
+                    placeholder.textContent = (translations[currentLang] && translations[currentLang]['video_loading']) || 'Video loading...';
                     placeholder.classList.remove('hidden');
 
                     // attach handlers
                     videoEl.onerror = function() {
-                        placeholder.textContent = 'Video topilmadi yoki brauzer uni ocholmadi. assets/demo.mp4 ni joylaganingizni tekshiring.';
+                        placeholder.textContent = (translations[currentLang] && translations[currentLang]['video_not_found']) || 'Video not found or unsupported.';
                         placeholder.classList.remove('hidden');
                         videoEl.classList.add('hidden');
                         console.error('Video load error for', url);
@@ -1068,7 +1219,7 @@
 
             let count = 10;
             timerEl.textContent = "00:10";
-            statusEl.textContent = "⚡ Qalqon aktivlashdi! Bildirishnomalar o'chirildi...";
+            statusEl.textContent = (translations[currentLang] && translations[currentLang]['demo_status_init']) || "⚡ Shield activated — notifications muted...";
 
             clearInterval(demoInt);
             demoInt = setInterval(() => {
@@ -1076,13 +1227,13 @@
                 timerEl.textContent = `00:${count < 10 ? '0' + count : count}`;
 
                 if (count === 7) {
-                    statusEl.textContent = "🚫 Instagram-ni ochish urinishi bloklandi!";
+                    statusEl.textContent = (translations[currentLang] && translations[currentLang]['demo_status_blocked']) || "🚫 Attempt to open Instagram blocked!";
                 } else if (count === 4) {
-                    statusEl.textContent = "🔥 18-daqiqalik kechiktirish rejimi ishlamoqda.";
+                    statusEl.textContent = (translations[currentLang] && translations[currentLang]['demo_status_delay']) || "🔥 18-minute delay engaged.";
                 } else if (count === 0) {
                     clearInterval(demoInt);
                     timerEl.textContent = "00:00";
-                    statusEl.textContent = "🎉 Seans yakunlandi! +25 Olov taqdirlandi!";
+                    statusEl.textContent = (translations[currentLang] && translations[currentLang]['demo_status_done']) || "🎉 Session complete! +25 Flame awarded!";
                     btn.disabled = false;
                     btn.classList.remove('opacity-50');
                 }
@@ -1148,8 +1299,79 @@
         // Standard load
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
-            setLanguage('uz');
+            setLanguage('en');
+            renderSubmissions();
         });
+
+        // iOS modal handlers
+        function openIosModal() {
+            const m = document.getElementById('ios-modal');
+            document.getElementById('ios-thanks').classList.add('hidden');
+            document.getElementById('ios-form').classList.remove('hidden');
+            document.getElementById('ios-email').value = '';
+            document.getElementById('ios-business').value = '';
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+        }
+
+        function closeIosModal() {
+            const m = document.getElementById('ios-modal');
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+        }
+
+        function submitIosInterest() {
+            const input = document.getElementById('ios-email');
+            const biz = (document.getElementById('ios-business').value || '').trim();
+            const email = (input.value || '').trim();
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!re.test(email)) {
+                const dict = translations[currentLang] || {};
+                alert(dict['ios_invalid_email'] || 'Please enter a valid email.');
+                input.focus();
+                return;
+            }
+
+            // store locally so user can test; in real app send to server
+            try {
+                const key = 'ios_interest_emails';
+                const cur = JSON.parse(localStorage.getItem(key) || '[]');
+                cur.push({email: email, business: biz, ts: Date.now()});
+                localStorage.setItem(key, JSON.stringify(cur));
+            } catch (e) { console.error(e); }
+
+            document.getElementById('ios-form').classList.add('hidden');
+            document.getElementById('ios-thanks').classList.remove('hidden');
+
+            renderSubmissions();
+
+            setTimeout(() => { closeIosModal(); }, 2200);
+        }
+
+        function renderSubmissions() {
+            try {
+                const key = 'ios_interest_emails';
+                const cur = JSON.parse(localStorage.getItem(key) || '[]');
+                const container = document.getElementById('submissions-container');
+                const section = document.getElementById('submissions-list');
+                if (!cur || cur.length === 0) {
+                    section.classList.add('hidden');
+                    return;
+                }
+                container.innerHTML = '';
+                cur.slice().reverse().forEach(item => {
+                    const el = document.createElement('div');
+                    el.className = 'p-3 rounded-xl bg-black/20 border border-white/5 flex items-center justify-between';
+                    el.innerHTML = `<div class="text-sm font-bold">${escapeHtml(item.business || '—')}</div><div class="text-xs text-gray-300">${escapeHtml(item.email)}</div>`;
+                    container.appendChild(el);
+                });
+                section.classList.remove('hidden');
+            } catch (e) { console.error(e); }
+        }
+
+        function escapeHtml(str) {
+            return String(str).replace(/[&<>"']/g, function(m) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]; });
+        }
     </script>
 </body>
 </html>

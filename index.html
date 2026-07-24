@@ -1,0 +1,1155 @@
+﻿<!DOCTYPE html>
+<html lang="uz" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focusy — Mukammal Diqqat Tizimi (Android)</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#030308',
+                        neonPurple: '#7B3EFF',
+                        neonBlue: '#00F0FF',
+                        accentBlue: '#3B82F6',
+                        glassCard: 'rgba(15, 15, 26, 0.75)',
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Icons & Animation Libraries -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+    <style>
+        body {
+            background-color: #030308;
+            color: #F3F4F6;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .mesh-bg {
+            background-image: 
+                radial-gradient(at 10% 10%, rgba(123, 62, 255, 0.18) 0px, transparent 50%),
+                radial-gradient(at 90% 20%, rgba(0, 240, 255, 0.15) 0px, transparent 50%),
+                radial-gradient(at 50% 80%, rgba(123, 62, 255, 0.12) 0px, transparent 50%);
+        }
+
+        .glass-panel {
+            background: rgba(18, 18, 30, 0.65);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(123, 62, 255, 0.4);
+            box-shadow: 0 20px 50px rgba(123, 62, 255, 0.25);
+            transform: translateY(-5px);
+        }
+
+        .text-gradient-purple {
+            background: linear-gradient(135deg, #FFFFFF 0%, #C084FC 40%, #7B3EFF 80%, #00F0FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #spotlight {
+            pointer-events: none;
+            position: fixed;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(123, 62, 255, 0.14) 0%, rgba(0, 240, 255, 0.04) 40%, transparent 70%);
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #030308; }
+        ::-webkit-scrollbar-thumb { background: rgba(123, 62, 255, 0.4); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #7B3EFF; }
+    </style>
+</head>
+<body class="mesh-bg selection:bg-neonPurple selection:text-white">
+
+    <div id="spotlight"></div>
+    <canvas id="particles-canvas" class="fixed top-0 left-0 w-full h-full pointer-events-none -z-10 opacity-60"></canvas>
+
+    <!-- ==========================================
+         NAVBAR (O'ZBEKCHA TAYYOR)
+    =========================================== -->
+    <header class="fixed top-0 left-0 w-full z-50 py-4 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+            
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="relative w-11 h-11 rounded-2xl bg-gradient-to-tr from-neonPurple via-accentBlue to-neonBlue p-[1.5px] transition-transform duration-300 group-hover:scale-105 shadow-[0_0_20px_rgba(123,62,255,0.4)]">
+                    <div class="w-full h-full bg-darkBg rounded-2xl flex items-center justify-center relative overflow-hidden">
+                        <svg class="w-6 h-6 text-neonPurple group-hover:text-neonBlue transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xl font-black tracking-tight text-white leading-none">Focusy<span class="text-neonBlue">.</span></span>
+                    <span class="text-[9px] font-bold text-gray-500 uppercase tracking-widest mt-0.5">Android OS</span>
+                </div>
+            </a>
+
+            <!-- Menu Navigation -->
+            <nav class="hidden lg:flex items-center gap-8 glass-panel px-8 py-3 rounded-full border border-white/10 shadow-2xl">
+                <a href="#hero" class="text-xs font-bold text-gray-300 hover:text-white transition-colors" data-i18n="nav_home">Bosh sahifa</a>
+                <a href="#showcase" class="text-xs font-bold text-gray-300 hover:text-white transition-colors" data-i18n="nav_showcase">Ekrani</a>
+                <a href="#why" class="text-xs font-bold text-gray-300 hover:text-white transition-colors" data-i18n="nav_why">Nega Focusy</a>
+                <a href="#features" class="text-xs font-bold text-gray-300 hover:text-white transition-colors" data-i18n="nav_features">Imkoniyatlar</a>
+                <a href="#how" class="text-xs font-bold text-gray-300 hover:text-white transition-colors" data-i18n="nav_how">Qanday ishlaydi</a>
+                <a href="#leaderboard" class="text-xs font-bold text-gray-300 hover:text-white transition-colors" data-i18n="nav_leaderboard">Reyting</a>
+                <a href="#faq" class="text-xs font-bold text-gray-300 hover:text-white transition-colors" data-i18n="nav_faq">Savollar</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <!-- Multi-Language Selector -->
+                <div class="relative">
+                    <button onclick="toggleLangMenu()" class="glass-panel px-3.5 py-2 rounded-xl text-xs font-extrabold flex items-center gap-2 border border-white/10 hover:border-neonPurple transition-all">
+                        <span id="current-lang-flag">🇺🇿</span>
+                        <span id="current-lang-text">UZ</span>
+                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 opacity-70"></i>
+                    </button>
+                    <div id="lang-dropdown" class="absolute right-0 mt-2 w-36 glass-panel rounded-2xl p-2 hidden border border-white/10 shadow-2xl z-50">
+                        <button onclick="setLanguage('uz')" class="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-left rounded-xl hover:bg-white/10 transition-colors">
+                            <span>🇺🇿</span> O'zbek
+                        </button>
+                        <button onclick="setLanguage('en')" class="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-left rounded-xl hover:bg-white/10 transition-colors">
+                            <span>🇺🇸</span> English
+                        </button>
+                        <button onclick="setLanguage('ru')" class="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-left rounded-xl hover:bg-white/10 transition-colors">
+                            <span>🇷🇺</span> Русский
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Google Play Download CTA Button -->
+                <a href="https://play.google.com/store/apps/details?id=com.focusy.productivity" class="hidden sm:flex items-center gap-2 bg-gradient-to-r from-neonPurple to-neonBlue hover:opacity-90 text-white font-black text-xs px-6 py-3 rounded-full shadow-lg shadow-purple-500/25 transition-all hover:scale-105">
+                    <i data-lucide="play" class="w-4 h-4 fill-current"></i>
+                    <span data-i18n="nav_download">Yuklab olish</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- ==========================================
+         HERO SECTION (FAKAT ANDROID + TAYYOR RASM)
+    =========================================== -->
+    <section id="hero" class="relative min-h-screen pt-36 pb-20 flex items-center justify-center overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+            
+            <div class="lg:col-span-7 text-center lg:text-left">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-neonPurple/40 mb-8">
+                    <span class="w-2.5 h-2.5 rounded-full bg-neonBlue animate-ping"></span>
+                    <span class="text-xs font-extrabold text-gray-200 uppercase tracking-widest" data-i18n="hero_badge">✨ Raqamli intizom kelajagi</span>
+                </div>
+
+                <h1 class="text-5xl sm:text-7xl font-black tracking-tight leading-[1.04] mb-6">
+                    <span class="block text-white" data-i18n="hero_title_1">Diqqatingizni</span>
+                    <span class="text-gradient-purple" data-i18n="hero_title_2">Qaytarib Oling.</span>
+                </h1>
+
+                <p class="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed mb-10" data-i18n="hero_subtitle">
+                    Giyandandiruvchi ilovalarni bloklang, chalg'ishlarni yo'qoting va mukammal diqqat rejimiga kiring.
+                </p>
+
+                <!-- Android Only Download Buttons -->
+                <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-14">
+                    <a href="https://play.google.com/store/apps/details?id=com.focusy.productivity" target="_blank" class="flex items-center gap-3 bg-white text-black font-black px-7 py-4 rounded-2xl hover:bg-gray-100 transition-all shadow-xl hover:scale-105">
+                        <i data-lucide="play" class="w-6 h-6 fill-current text-neonPurple"></i>
+                        <div class="text-left leading-none">
+                            <div class="text-[9px] uppercase font-bold text-gray-500">GET IT ON</div>
+                            <div class="text-xs font-black">Google Play</div>
+                        </div>
+                    </a>
+
+                    <a href="https://play.google.com/store/apps/details?id=com.focusy.productivity" target="_blank" class="flex items-center gap-3 glass-panel text-white font-black px-7 py-4 rounded-2xl hover:bg-white/10 transition-all hover:scale-105 border border-white/20">
+                        <i data-lucide="download" class="w-6 h-6 text-neonBlue"></i>
+                        <div class="text-left leading-none">
+                            <div class="text-[9px] uppercase font-bold text-gray-400">BEVOSITA YUKLASH</div>
+                            <div class="text-xs font-black">Android APK</div>
+                        </div>
+                    </a>
+
+                    <button onclick="openVideoModal('https://youtu.be/_FciCw1zkgQ?t=11')" class="flex items-center gap-2.5 px-6 py-4 rounded-2xl glass-panel text-gray-300 hover:text-white transition-all border border-white/10 hover:border-neonPurple">
+                        <i data-lucide="play-circle" class="w-5 h-5 text-neonPurple"></i>
+                        <span class="text-xs font-bold" data-i18n="hero_watch_demo">Videoni ko'rish</span>
+                    </button>
+                </div>
+
+                <div class="text-[11px] text-gray-400 mt-3 max-w-sm">Agar sizda video fayl bo'lsa, uni loyihada <strong>assets/demo.mp4</strong> nomi bilan joylashtiring — tugma shu faylni ochadi. YouTube havolasi bor bo'lsa menyudagi videoni o'zgartirish uchun menga yuboring.</div>
+
+                <!-- Corrected Stats: 10K+ Downloads & 100K+ Sessions -->
+                <div class="grid grid-cols-3 gap-6 pt-8 border-t border-white/10 max-w-xl mx-auto lg:mx-0">
+                    <div>
+                        <div class="text-2xl sm:text-3xl font-black text-white">10K+</div>
+                        <div class="text-[11px] text-gray-400 mt-1 font-semibold" data-i18n="stat_downloads_label">Faol Yuklanmalar</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl sm:text-3xl font-black text-neonBlue">100K+</div>
+                        <div class="text-[11px] text-gray-400 mt-1 font-semibold" data-i18n="stat_sessions_label">Diqqat Seanslari</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl sm:text-3xl font-black text-white flex items-center gap-1 justify-center lg:justify-start">
+                            <span>4.9</span>
+                            <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                        </div>
+                        <div class="text-[11px] text-gray-400 mt-1 font-semibold" data-i18n="stat_rating_label">Foydalanuvchi Bahosi</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Phone Device Frame with Embedded High-Quality Image -->
+            <div class="lg:col-span-5 flex flex-col items-center justify-center">
+                
+                <div class="relative w-[285px] sm:w-[320px] h-[590px] bg-black rounded-[50px] p-3 border-4 border-gray-800 shadow-[0_0_80px_rgba(123,62,255,0.4)]">
+                    
+                    <!-- Dynamic Island Notch -->
+                    <div class="absolute top-6 left-1/2 -translate-x-1/2 w-28 h-6 bg-black rounded-full z-30 flex items-center justify-between px-3">
+                        <div class="w-2 h-2 rounded-full bg-gray-900"></div>
+                        <div class="w-2 h-2 rounded-full bg-blue-950"></div>
+                    </div>
+
+                    <!-- Phone Display with Embedded High Quality Image -->
+                    <div id="phone-screen-container" class="relative w-full h-full rounded-[38px] overflow-hidden border border-white/10 bg-[#090912]">
+                        <img id="custom-screen-img" 
+                             src="img/photo_2026-07-24_20-58-23.jpg" 
+                             alt="Focusy App UI" 
+                             class="w-full h-full object-cover rounded-[38px]">
+                    </div>
+                </div>
+
+              
+
+          
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ==========================================
+         LIVE SHOWCASE SCREEN CAROUSEL
+    =========================================== -->
+    <section id="showcase" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <h2 class="text-xs font-extrabold text-neonBlue uppercase tracking-widest mb-2" data-i18n="showcase_badge">Interaktiv Tajriba</h2>
+                <h3 class="text-3xl sm:text-4xl font-extrabold text-white" data-i18n="showcase_title">Ilova Ekranlarini O'rganing</h3>
+            </div>
+
+            <!-- Tab Selectors -->
+            <div class="flex items-center justify-center gap-2 overflow-x-auto pb-6 mb-8 scrollbar-none">
+                <button onclick="selectSlide(0)" class="showcase-tab px-5 py-2.5 rounded-2xl glass-panel text-xs font-extrabold transition-all border-neonPurple bg-neonPurple/20 text-white" data-idx="0" data-i18n="tab_home">Asosiy</button>
+                <button onclick="selectSlide(1)" class="showcase-tab px-5 py-2.5 rounded-2xl glass-panel text-xs font-extrabold transition-all text-gray-400 hover:text-white" data-idx="1" data-i18n="tab_timer">Taymer</button>
+                <button onclick="selectSlide(2)" class="showcase-tab px-5 py-2.5 rounded-2xl glass-panel text-xs font-extrabold transition-all text-gray-400 hover:text-white" data-idx="2" data-i18n="tab_planner">Rejalashtirgich</button>
+                <button onclick="selectSlide(3)" class="showcase-tab px-5 py-2.5 rounded-2xl glass-panel text-xs font-extrabold transition-all text-gray-400 hover:text-white" data-idx="3" data-i18n="tab_stats">Statistika</button>
+                <button onclick="selectSlide(4)" class="showcase-tab px-5 py-2.5 rounded-2xl glass-panel text-xs font-extrabold transition-all text-gray-400 hover:text-white" data-idx="4" data-i18n="tab_leaderboard">Reyting</button>
+            </div>
+
+            <div class="glass-card max-w-4xl mx-auto p-8 sm:p-12 rounded-3xl border border-white/10 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                
+                <div class="w-60 h-[460px] mx-auto bg-black rounded-[42px] p-3 border-2 border-gray-700 shadow-2xl flex flex-col justify-between">
+                    <div id="showcase-screen-box" class="w-full h-full bg-[#0a0a14] rounded-[32px] p-5 flex flex-col justify-between relative overflow-hidden">
+                        <div class="text-xs font-extrabold text-neonPurple pt-2 text-center" id="sc-title">Bosh sahifa</div>
+                        
+                        <div class="my-auto space-y-4 text-center">
+                            <div class="w-20 h-20 mx-auto rounded-2xl bg-neonPurple/20 flex items-center justify-center text-neonPurple border border-neonPurple/40" id="sc-icon">
+                                <i data-lucide="layout-dashboard" class="w-10 h-10"></i>
+                            </div>
+                            <div class="text-2xl font-black text-white" id="sc-val">84% Diqqat Balli</div>
+                        </div>
+
+                        <div class="text-[10px] text-gray-500 text-center">Focusy OS v2.5</div>
+                    </div>
+                </div>
+
+                <div class="text-left space-y-4">
+                    <span class="text-xs font-black text-neonBlue uppercase tracking-widest" id="sc-tag">ASOSIY FUNKSIYA</span>
+                    <h4 class="text-3xl font-black text-white" id="sc-heading">Bosh Sahifa va Statistika</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed" id="sc-desc">
+                        Kunlik diqqat darajangiz, Olov ballaringiz, aktiv bloklar va rejalashtirilgan seanslarni real vaqt rejimida kuzatib boring.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ==========================================
+         WHY FOCUSY?
+    =========================================== -->
+    <section id="why" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-xs font-bold text-neonPurple uppercase tracking-widest mb-2" data-i18n="why_badge">Fan Va Yechim</h2>
+                <h3 class="text-3xl sm:text-4xl font-extrabold text-white" data-i18n="why_title">Nega Oddiy Bloklovchilar Ishlamaydi?</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <div class="glass-card p-8 rounded-3xl space-y-6">
+                    <div class="flex justify-between items-start">
+                        <div class="w-12 h-12 rounded-2xl bg-rose-500/20 flex items-center justify-center text-rose-400">
+                            <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-rose-400 uppercase bg-rose-500/10 px-2.5 py-1 rounded-full">MUAMMO</span>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xl font-extrabold text-white mb-2" data-i18n="why_card1_title">Insonlar Vaqt Yo'qotishi</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed" data-i18n="why_card1_desc">
+                            O'rtacha foydalanuvchi kuniga 144 marta telefonini tekshiradi va 4.5 soat vaqt yo'qotadi.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-black/40 border border-white/5 space-y-2">
+                        <div class="flex justify-between text-xs text-gray-400 font-bold">
+                            <span>Kunlik Yo'qotilgan Vaqt</span>
+                            <span class="text-rose-400">4.5 Soat</span>
+                        </div>
+                        <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden">
+                            <div class="bg-rose-500 h-full w-[80%] rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-8 rounded-3xl space-y-6">
+                    <div class="flex justify-between items-start">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-500/20 flex items-center justify-center text-amber-400">
+                            <i data-lucide="zap" class="w-6 h-6"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-amber-400 uppercase bg-amber-500/10 px-2.5 py-1 rounded-full">QARAMLIK</span>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xl font-extrabold text-white mb-2" data-i18n="why_card2_title">Dopamin Qaramligi</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed" data-i18n="why_card2_desc">
+                            Bildirishnomalar va cheksiz lentalar e'tibor markazini kuchsizlantiradi.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-black/40 border border-white/5 flex items-center justify-between">
+                        <span class="text-xs text-gray-400 font-bold">Qaramlik Halqasi</span>
+                        <span class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 text-[10px] font-bold">YUQORI</span>
+                    </div>
+                </div>
+
+                <div class="glass-card p-8 rounded-3xl border-neonPurple/40 bg-gradient-to-b from-purple-950/20 to-transparent space-y-6">
+                    <div class="flex justify-between items-start">
+                        <div class="w-12 h-12 rounded-2xl bg-neonPurple/20 flex items-center justify-center text-neonBlue">
+                            <i data-lucide="shield-check" class="w-6 h-6"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-neonBlue uppercase bg-neonBlue/10 px-2.5 py-1 rounded-full">YECHIM</span>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xl font-extrabold text-white mb-2" data-i18n="why_card3_title">Focusy Yechimi</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed" data-i18n="why_card3_desc">
+                            Kechiktirish mexanizmi va Olov (Flame) tizimi intizomni mustahkamlaydi.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-black/40 border border-neonPurple/20 space-y-2">
+                        <div class="flex justify-between text-xs text-gray-300 font-bold">
+                            <span>Qaytarilgan Vaqt</span>
+                            <span class="text-neonBlue">+3.2 Soat/Kun</span>
+                        </div>
+                        <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden">
+                            <div class="bg-gradient-to-r from-neonPurple to-neonBlue h-full w-[90%] rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ==========================================
+         FEATURES SECTION
+    =========================================== -->
+    <section id="features" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-xs font-bold text-neonBlue uppercase tracking-widest mb-2" data-i18n="feat_badge">Keng Imkoniyatlar</h2>
+                <h3 class="text-3xl sm:text-4xl font-extrabold text-white" data-i18n="feat_title">Asosiy Funksiyalar</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Feature 1 -->
+                <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-2xl bg-neonPurple/20 flex items-center justify-center text-neonPurple">
+                            <i data-lucide="timer" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-xl font-extrabold text-white" data-i18n="f1_title">18 Daqiqa Qoidasi</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed" data-i18n="f1_desc">Ilovani ochishdan oldin majburiy 18 daqiqalik kuting kiritadi.</p>
+                    </div>
+
+                    <div class="my-6 p-4 rounded-2xl bg-black/40 border border-white/5 flex items-center justify-between">
+                        <div class="text-left">
+                            <div class="text-xs font-bold text-white">Kutish Taymeri</div>
+                            <div class="text-[10px] text-gray-500">Aktiv rejim</div>
+                        </div>
+                        <span class="text-xs font-mono font-bold text-neonPurple px-3 py-1 rounded-lg bg-neonPurple/10">18:00</span>
+                    </div>
+
+                    <button onclick="openFeatureModal('18 Daqiqa Qoidasi', '18 daqiqalik qoida hissiy istaklarni jilovlaydi. Ruhiy tadqiqotlar shuni ko\'rsatadiki, ijtimoiy tarmoqlarni ochish xohishi 10-15 daqiqa ichida o\'tib ketadi.')" class="flex items-center gap-2 text-xs font-extrabold text-neonPurple hover:text-neonBlue transition-colors w-max">
+                        <span data-i18n="learn_more">Batafsil</span>
+                        <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-2xl bg-neonBlue/20 flex items-center justify-center text-neonBlue">
+                            <i data-lucide="zap" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-xl font-extrabold text-white" data-i18n="f2_title">Chuqur Ish Taymeri</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed" data-i18n="f2_desc">Pomodoro 2.0 tizimi va tinchlantiruvchi fon ovozlari.</p>
+                    </div>
+
+                    <div class="my-6 p-4 rounded-2xl bg-black/40 border border-white/5 flex items-center justify-between">
+                        <span class="text-xs font-bold text-gray-300">Taymer Rejimi</span>
+                        <div class="flex gap-1.5">
+                            <span class="text-[10px] font-bold px-2 py-1 rounded bg-neonPurple text-white">25m</span>
+                            <span class="text-[10px] font-bold px-2 py-1 rounded bg-white/10 text-gray-400">50m</span>
+                        </div>
+                    </div>
+
+                    <button onclick="openFeatureModal('Chuqur Ish Taymeri', '15 daqiqadan 180 daqiqagacha bo\'lgan maxsus diqqat seanslari. Bunga tinchlantiruvchi braun noise audio va qat\'iy bloklash kiritilgan.')" class="flex items-center gap-2 text-xs font-extrabold text-neonPurple hover:text-neonBlue transition-colors w-max">
+                        <span data-i18n="learn_more">Batafsil</span>
+                        <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-2xl bg-rose-500/20 flex items-center justify-center text-rose-400">
+                            <i data-lucide="shield-alert" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-xl font-extrabold text-white" data-i18n="f3_title">Ilovalarni Bloklash</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed" data-i18n="f3_desc">Ijtimoiy tarmoqlar va o'yinlarni Android tizimi darajasida bloklaydi.</p>
+                    </div>
+
+                    <div class="my-6 p-3.5 rounded-2xl bg-black/40 border border-white/5 space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-gray-300 font-bold">Instagram</span>
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-rose-500/20 text-rose-400">BLOKLANGAN</span>
+                        </div>
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-gray-300 font-bold">TikTok</span>
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-rose-500/20 text-rose-400">BLOKLANGAN</span>
+                        </div>
+                    </div>
+
+                    <button onclick="openFeatureModal('Ilovalarni Bloklash', 'Android maxsus ruxsatlaridan foydalanib, chalg\'ituvchi ilova ochilishi bilan uni 5 millisekund ichida yopadi.')" class="flex items-center gap-2 text-xs font-extrabold text-neonPurple hover:text-neonBlue transition-colors w-max">
+                        <span data-i18n="learn_more">Batafsil</span>
+                        <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-500/20 flex items-center justify-center text-amber-400">
+                            <i data-lucide="flame" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-xl font-extrabold text-white" data-i18n="f4_title">Jarima Ekrani</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed" data-i18n="f4_desc">Seansni vaqtidan oldin tugatish Olov ochkolarini kuydiradi.</p>
+                    </div>
+
+                    <div class="my-6 p-4 rounded-2xl bg-black/40 border border-white/5 flex items-center justify-between">
+                        <span class="text-xs font-bold text-gray-300">Tugatish Jarimasi</span>
+                        <span class="text-xs font-extrabold text-rose-400">-50 Olov 🔥</span>
+                    </div>
+
+                    <button onclick="openFeatureModal('Jarima Ekrani', 'Seansni barvaqt yopish uchun 50 Olov balini yo'qotishga rozilik berishingiz kerak. Bu psixologik to'siq sizni chalg'ishdan saqlaydi.')" class="flex items-center gap-2 text-xs font-extrabold text-neonPurple hover:text-neonBlue transition-colors w-max">
+                        <span data-i18n="learn_more">Batafsil</span>
+                        <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+                            <i data-lucide="calendar" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-xl font-extrabold text-white" data-i18n="f5_title">Aqlli Rejalashtirgich</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed" data-i18n="f5_desc">Ish va o'qish vaqtlarini avtomatik rejalashtirish.</p>
+                    </div>
+
+                    <div class="my-6 p-4 rounded-2xl bg-black/40 border border-white/5 flex items-center justify-between text-xs">
+                        <span class="text-gray-300 font-bold">Avto Rejim</span>
+                        <span class="text-indigo-400 font-bold">09:00 - 17:00</span>
+                    </div>
+
+                    <button onclick="openFeatureModal('Aqlli Rejalashtirgich', 'Haftalik ish jadvalingizni sozlang. Ish vaqti boshlanishi bilan Focusy ilovalarni avtomatik ravishda bloklaydi.')" class="flex items-center gap-2 text-xs font-extrabold text-neonPurple hover:text-neonBlue transition-colors w-max">
+                        <span data-i18n="learn_more">Batafsil</span>
+                        <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                            <i data-lucide="trophy" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-xl font-extrabold text-white" data-i18n="f6_title">Kunlik Seriya (Streak)</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed" data-i18n="f6_desc">Kunlik intizomni saqlang va reytingda ko'tariling.</p>
+                    </div>
+
+                    <div class="my-6 p-4 rounded-2xl bg-black/40 border border-white/5 flex items-center justify-between text-xs">
+                        <span class="text-gray-300 font-bold">Faol Seriya</span>
+                        <span class="text-emerald-400 font-extrabold">14 Kun 🔥</span>
+                    </div>
+
+                    <button onclick="openFeatureModal('Kunlik Seriya', 'Har kuni diqqat seanslarini bajarib, seriyangizni saqlang va global reytingda yuqoriga ko\'tariling.')" class="flex items-center gap-2 text-xs font-extrabold text-neonPurple hover:text-neonBlue transition-colors w-max">
+                        <span data-i18n="learn_more">Batafsil</span>
+                        <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ==========================================
+         HOW IT WORKS
+    =========================================== -->
+    <section id="how" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-xs font-bold text-neonPurple uppercase tracking-widest mb-2" data-i18n="how_badge">Oson Bosqichlar</h2>
+                <h3 class="text-3xl sm:text-4xl font-extrabold text-white" data-i18n="how_title">Focusy Qanday Ishlaydi</h3>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="glass-card p-6 rounded-2xl">
+                    <span class="text-xs font-black text-neonPurple">01-BOSQICH</span>
+                    <h5 class="text-sm font-bold text-white mt-2" data-i18n="step1_title">Ilovani Tanlang</h5>
+                    <p class="text-[11px] text-gray-400 mt-1" data-i18n="step1_desc">Ijtimoiy tarmoqlarni belgilang</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl">
+                    <span class="text-xs font-black text-neonBlue">02-BOSQICH</span>
+                    <h5 class="text-sm font-bold text-white mt-2" data-i18n="step2_title">Taymerni Sozlang</h5>
+                    <p class="text-[11px] text-gray-400 mt-1" data-i18n="step2_desc">25, 50 yoki 90 daqiqa tanlang</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl">
+                    <span class="text-xs font-black text-purple-400">03-BOSQICH</span>
+                    <h5 class="text-sm font-bold text-white mt-2" data-i18n="step3_title">Diqqat Rejimi</h5>
+                    <p class="text-[11px] text-gray-400 mt-1" data-i18n="step3_desc">Bloklash avtomatik yoqiladi</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl">
+                    <span class="text-xs font-black text-emerald-400">04-BOSQICH</span>
+                    <h5 class="text-sm font-bold text-white mt-2" data-i18n="step4_title">Olov Qozoning</h5>
+                    <p class="text-[11px] text-gray-400 mt-1" data-i18n="step4_desc">Mukofot oling va darajangizni oshiring</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ==========================================
+         INTERACTIVE DEMO SIMULATOR
+    =========================================== -->
+    <section id="demo" class="py-24 relative">
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="glass-card p-10 rounded-3xl text-center border-neonPurple/30">
+                <span class="text-[10px] font-black text-neonPurple uppercase tracking-widest block mb-2" data-i18n="demo_badge">Interaktiv Simulyator</span>
+                <h3 class="text-3xl font-extrabold text-white mb-4" data-i18n="demo_title">10 Soniyalik Sinov Seansi</h3>
+                
+                <div id="demo-box" class="glass-panel p-6 rounded-2xl space-y-4 max-w-sm mx-auto my-6 border border-white/10">
+                    <div class="text-4xl font-mono font-black text-white" id="demo-timer">00:10</div>
+                    <div class="text-xs font-bold text-gray-400" id="demo-status" data-i18n="demo_ready">Sinashga tayyormisiz? Boshlash tugmasini bosing.</div>
+                </div>
+
+                <button id="start-demo-btn" onclick="runDemo()" class="bg-gradient-to-r from-neonPurple to-neonBlue text-white font-extrabold text-xs px-8 py-4 rounded-xl shadow-lg hover:scale-105 transition-all">
+                    🚀 <span data-i18n="demo_btn">10s Sinovni Boshlash</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ==========================================
+         GLOBAL LEADERBOARD
+    =========================================== -->
+    <section id="leaderboard" class="py-24 relative">
+        <div class="max-w-3xl mx-auto px-6 text-center">
+            <h2 class="text-xs font-bold text-neonPurple uppercase tracking-widest mb-2" data-i18n="rank_badge">Chempionlar</h2>
+            <h3 class="text-3xl font-extrabold text-white mb-10" data-i18n="rank_title">Global Reyting</h3>
+
+            <div class="grid grid-cols-3 gap-4 items-end">
+                <div class="glass-card p-4 rounded-2xl h-44 flex flex-col justify-end">
+                    <div class="text-2xl">🥈</div>
+                    <div class="text-xs font-bold text-white mt-1">Elena R.</div>
+                    <div class="text-[10px] text-neonBlue font-mono font-bold">12,890 🔥</div>
+                </div>
+                <div class="glass-card p-4 rounded-2xl h-56 flex flex-col justify-end border-yellow-400/50">
+                    <div class="text-3xl">🥇</div>
+                    <div class="text-sm font-black text-white mt-1">Alex Rivera</div>
+                    <div class="text-xs text-yellow-400 font-mono font-bold">15,420 🔥</div>
+                </div>
+                <div class="glass-card p-4 rounded-2xl h-36 flex flex-col justify-end">
+                    <div class="text-2xl">🥉</div>
+                    <div class="text-xs font-bold text-white mt-1">Jasur K.</div>
+                    <div class="text-[10px] text-amber-500 font-mono font-bold">11,100 🔥</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ==========================================
+         FAQ ACCORDION
+    =========================================== -->
+    <section id="faq" class="py-24 relative max-w-3xl mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-xs font-bold text-neonBlue uppercase tracking-widest mb-2">FAQ</h2>
+            <h3 class="text-3xl font-extrabold text-white" data-i18n="faq_title">Ko'p Beriladigan Savollar</h3>
+        </div>
+
+        <div class="space-y-3">
+            <div class="glass-card rounded-2xl overflow-hidden">
+                <button onclick="toggleFaq(this)" class="w-full p-5 text-left font-bold text-white flex justify-between items-center text-sm">
+                    <span data-i18n="faq1_q">Focusy nima va u qanday ishlaydi?</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-neonPurple"></i>
+                </button>
+                <div class="faq-content hidden p-5 pt-0 text-xs text-gray-400 leading-relaxed border-t border-white/5" data-i18n="faq1_a">
+                    Focusy — diqqatni jamlash, chalg'ishlarni yo'qotish va telefon qaramligidan xalos bo'lish uchun mo'ljallangan ilova.
+                </div>
+            </div>
+
+            <div class="glass-card rounded-2xl overflow-hidden">
+                <button onclick="toggleFaq(this)" class="w-full p-5 text-left font-bold text-white flex justify-between items-center text-sm">
+                    <span data-i18n="faq2_q">18 daqiqa qoidasi qanday ishlaydi?</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-neonPurple"></i>
+                </button>
+                <div class="faq-content hidden p-5 pt-0 text-xs text-gray-400 leading-relaxed border-t border-white/5" data-i18n="faq2_a">
+                    Ilovani ochishni so'raganingizda 18 daqiqalik kutish vaqti qo'yiladi. Bu vaqt ichida hissiy xohish yo'qoladi.
+                </div>
+            </div>
+
+            <div class="glass-card rounded-2xl overflow-hidden">
+                <button onclick="toggleFaq(this)" class="w-full p-5 text-left font-bold text-white flex justify-between items-center text-sm">
+                    <span data-i18n="faq3_q">Mening ma'lumotlarim xavfsizda bo'ladimi?</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-neonPurple"></i>
+                </button>
+                <div class="faq-content hidden p-5 pt-0 text-xs text-gray-400 leading-relaxed border-t border-white/5" data-i18n="faq3_a">
+                    Ha! Focusy barcha ma'lumotlarni faqat telefoningizda saqlaydi va hech qayerga uzatmaydi.
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ==========================================
+         DOWNLOAD SECTION (ANDROID ONLY)
+    =========================================== -->
+    <section id="download" class="py-24 relative max-w-5xl mx-auto px-6 text-center">
+        <div class="glass-card p-12 rounded-[40px] border-neonPurple/40 bg-gradient-to-b from-purple-950/20 to-darkBg">
+            <h2 class="text-4xl sm:text-5xl font-black text-white mb-4" data-i18n="dl_title">Hayotingizni O'zgartirishga Tayyormisiz?</h2>
+            <p class="text-sm text-gray-400 mb-8 max-w-lg mx-auto" data-i18n="dl_subtitle">Focusy-ni bugun yuklab oling va minglab soat vaqtingizni qaytarib oling.</p>
+            
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <a href="https://play.google.com/store/apps/details?id=com.focusy.productivity" class="flex items-center gap-3 bg-white text-black font-extrabold px-7 py-4 rounded-2xl hover:bg-gray-100 transition-all shadow-xl hover:scale-105">
+                    <i data-lucide="play" class="w-6 h-6 fill-current text-neonPurple"></i>
+                    <div class="text-left leading-none">
+                        <div class="text-[9px] uppercase font-bold text-gray-500">GET IT ON</div>
+                        <div class="text-xs font-black">Google Play</div>
+                    </div>
+                </a>
+                
+                <a href="https://play.google.com/store/apps/details?id=com.focusy.productivity" class="flex items-center gap-3 glass-panel text-white font-extrabold px-7 py-4 rounded-2xl hover:bg-white/10 transition-all border border-white/20">
+                    <i data-lucide="download" class="w-6 h-6 text-neonBlue"></i>
+                    <div class="text-left leading-none">
+                        <div class="text-[9px] uppercase font-bold text-gray-400">BEVOSITA YUKLASH</div>
+                        <div class="text-xs font-black">Android APK File</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ==========================================
+         FOOTER
+    =========================================== -->
+    <footer class="py-12 border-t border-white/10 text-center text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="font-bold text-white text-base">Focusy<span class="text-neonPurple">.</span></div>
+            <div>© 2026 Focusy Inc. Android uchun tayyorlangan.</div>
+            <div class="flex gap-4">
+                <a href="#" class="hover:text-white">Muxfiylik</a>
+                <a href="#" class="hover:text-white">Shartlar</a>
+                <a href="#" class="hover:text-white">Yordam</a>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ==========================================
+         MODALS
+    =========================================== -->
+    <div id="feature-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-6">
+        <div class="glass-card max-w-md w-full p-8 rounded-3xl border border-neonPurple/40 relative">
+            <button onclick="closeFeatureModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <h3 class="text-xl font-bold text-white mb-3" id="modal-title">Sarlavha</h3>
+            <p class="text-xs text-gray-300 leading-relaxed mb-6" id="modal-desc">Batafsil ma'lumot.</p>
+            <button onclick="closeFeatureModal()" class="w-full py-3 rounded-xl bg-neonPurple text-white font-bold text-xs">Yopish</button>
+        </div>
+    </div>
+
+    <div id="video-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-6">
+        <div class="glass-card max-w-2xl w-full p-6 rounded-3xl border border-white/20 relative">
+            <button onclick="closeVideoModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <h3 class="text-lg font-bold text-white mb-4">Focusy Ilova Videosi</h3>
+            <div class="aspect-video bg-black rounded-2xl flex items-center justify-center border border-white/10 text-gray-400 text-xs">
+                <video id="video-player" class="w-full h-full rounded-2xl bg-black hidden" controls playsinline></video>
+                <iframe id="video-iframe" class="w-full h-full rounded-2xl bg-black hidden" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <div id="video-placeholder" class="text-gray-400 text-xs">[ Cinematic Video Demo ]</div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ==========================================
+         JAVASCRIPT ENGINES
+    =========================================== -->
+    <script>
+        // 1. Phone Image Customizer Engine (local upload -> blob URL + copy/download link)
+        let __currentPhoneBlobUrl = null;
+        function uploadPhoneScreen(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+
+            if (__currentPhoneBlobUrl) {
+                try { URL.revokeObjectURL(__currentPhoneBlobUrl); } catch (e) {}
+                __currentPhoneBlobUrl = null;
+            }
+
+            const blobUrl = URL.createObjectURL(file);
+            __currentPhoneBlobUrl = blobUrl;
+
+            document.getElementById('custom-screen-img').src = blobUrl;
+
+            const uploadedLink = document.getElementById('uploaded-link');
+            uploadedLink.href = blobUrl;
+            uploadedLink.textContent = file.name || 'Yuklangan rasm';
+            uploadedLink.classList.remove('hidden');
+
+            const copyBtn = document.getElementById('copy-link-btn');
+            copyBtn.classList.remove('hidden');
+
+            const downloadLink = document.getElementById('download-link');
+            downloadLink.href = blobUrl;
+            downloadLink.download = file.name || 'image.png';
+            downloadLink.classList.remove('hidden');
+        }
+
+        function copyUploadLink() {
+            const uploadedLink = document.getElementById('uploaded-link');
+            if (!uploadedLink || !uploadedLink.href) return alert('Hech nima yuklanmadi.');
+            navigator.clipboard.writeText(uploadedLink.href).then(() => {
+                const btn = document.getElementById('copy-link-btn');
+                const old = btn.textContent;
+                btn.textContent = 'Nusxa olindi';
+                setTimeout(() => btn.textContent = old, 1500);
+            }).catch(() => {
+                alert('Manzilni nusxalash uddalanmadi.');
+            });
+        }
+
+        // 2. Multi-Language Switcher (Default: O'zbekcha)
+        const translations = {
+            uz: {
+                nav_home: "Bosh sahifa", nav_showcase: "Ekrani", nav_why: "Nega Focusy", nav_features: "Imkoniyatlar",
+                nav_how: "Qanday ishlaydi", nav_leaderboard: "Reyting", nav_faq: "Savollar", nav_download: "Yuklab olish",
+                hero_badge: "✨ Raqamli intizom kelajagi", hero_title_1: "Diqqatingizni", hero_title_2: "Qaytarib Oling.",
+                hero_subtitle: "Giyandandiruvchi ilovalarni bloklang, chalg'ishlarni yo'qoting va mukammal diqqat rejimiga kiring.",
+                hero_watch_demo: "Videoni ko'rish", stat_downloads_label: "Faol Yuklanmalar", stat_sessions_label: "Diqqat Seanslari", stat_rating_label: "Foydalanuvchi Bahosi",
+                custom_screen_title: "📸 Telefon Ichiga Rasm Qo'yish", upload_btn: "Kompyuterdan Rasm Yuklash",
+                showcase_badge: "Interaktiv Tajriba", showcase_title: "Ilova Ekranlarini O'rganing", tab_home: "Asosiy", tab_timer: "Taymer",
+                tab_planner: "Rejalashtirgich", tab_stats: "Statistika", tab_leaderboard: "Reyting", why_badge: "Fan Va Yechim",
+                why_title: "Nega Oddiy Bloklovchilar Ishlamaydi?", why_card1_title: "Insonlar Vaqt Yo'qotishi",
+                why_card1_desc: "O'rtacha foydalanuvchi kuniga 144 marta telefonini tekshiradi va 4.5 soat vaqt yo'qotadi.",
+                why_card2_title: "Dopamin Qaramligi", why_card2_desc: "Bildirishnomalar va cheksiz lentalar e'tibor markazini kuchsizlantiradi.",
+                why_card3_title: "Focusy Yechimi", why_card3_desc: "Kechiktirish mexanizmi va Olov (Flame) tizimi intizomni mustahkamlaydi.",
+                feat_badge: "Keng Imkoniyatlar", feat_title: "Asosiy Funksiyalar", f1_title: "18 Daqiqa Qoidasi",
+                f1_desc: "Ilovani ochishdan oldin majburiy 18 daqiqalik kuting kiritadi.", f2_title: "Chuqur Ish Taymeri",
+                f2_desc: "Pomodoro 2.0 tizimi va tinchlantiruvchi fon ovozlari.", f3_title: "Ilovalarni Bloklash",
+                f3_desc: "Ijtimoiy tarmoqlar va o'yinlarni Android tizimi darajasida bloklaydi.", f4_title: "Jarima Ekrani",
+                f4_desc: "Seansni vaqtidan oldin tugatish Olov ochkolarini kuydiradi.", f5_title: "Aqlli Rejalashtirgich",
+                f5_desc: "Ish va o'qish vaqtlarini avtomatik rejalashtirish.", f6_title: "Kunlik Seriya (Streak)",
+                f6_desc: "Kunlik intizomni saqlang va reytingda ko'tariling.", learn_more: "Batafsil", how_badge: "Oson Bosqichlar",
+                how_title: "Focusy Qanday Ishlaydi", step1_title: "Ilovani Tanlang", step1_desc: "Ijtimoiy tarmoqlarni belgilang",
+                step2_title: "Taymerni Sozlang", step2_desc: "25, 50 yoki 90 daqiqa tanlang", step3_title: "Diqqat Rejimi",
+                step3_desc: "Bloklash avtomatik yoqiladi", step4_title: "Olov Qozoning", step4_desc: "Mukofot oling va darajangizni oshiring",
+                demo_badge: "Interaktiv Simulyator", demo_title: "10 Soniyalik Sinov Seansi", demo_ready: "Sinashga tayyormisiz? Boshlash tugmasini bosing.",
+                demo_btn: "10s Sinovni Boshlash", rank_badge: "Chempionlar", rank_title: "Global Reyting", faq_title: "Ko'p Beriladigan Savollar",
+                faq1_q: "Focusy nima va u qanday ishlaydi?", faq1_a: "Focusy — diqqatni jamlash va telefon qaramligidan xalos bo'lish uchun mo'ljallangan ilova.",
+                faq2_q: "18 daqiqa qoidasi qanday ishlaydi?", faq2_a: "Ilovani ochishni so'raganingizda 18 daqiqalik kutish vaqti qo'yiladi.",
+                faq3_q: "Mening ma'lumotlarim xavfsizda bo'ladimi?", faq3_a: "Ha! Focusy barcha ma'lumotlarni faqat telefoningizda saqlaydi.",
+                dl_title: "Hayotingizni O'zgartirishga Tayyormisiz?", dl_subtitle: "Focusy-ni bugun yuklab oling va minglab soat vaqtingizni qaytarib oling."
+            },
+            en: {
+                nav_home: "Home", nav_showcase: "Showcase", nav_why: "Why Focusy", nav_features: "Features",
+                nav_how: "How it Works", nav_leaderboard: "Leaderboard", nav_faq: "FAQ", nav_download: "Download",
+                hero_badge: "✨ The Future of Digital Discipline", hero_title_1: "Take Back", hero_title_2: "Your Focus.",
+                hero_subtitle: "Block addictions, crush distractions, and unlock deep work flow states with cinematic precision.",
+                hero_watch_demo: "Watch Demo", stat_downloads_label: "Active Downloads", stat_sessions_label: "Focus Sessions", stat_rating_label: "User Rating",
+                custom_screen_title: "📸 Custom App Screen Preview", upload_btn: "Upload Your App Screenshot",
+                showcase_badge: "Interactive Experience", showcase_title: "Explore App Screens", tab_home: "Home", tab_timer: "Timer",
+                tab_planner: "Planner", tab_stats: "Statistics", tab_leaderboard: "Leaderboard", why_badge: "The Science & Solution",
+                why_title: "Why Traditional Blockers Fail", why_card1_title: "Why People Waste Time",
+                why_card1_desc: "Average smartphone users check their phone 144 times a day, losing over 4.5 hours.",
+                why_card2_title: "Dopamine Exploitation", why_card2_desc: "Variable rewards and push notifications trigger instant gratification, weakening focus.",
+                why_card3_title: "How Focusy Solves It", why_card3_desc: "By combining hard-locking friction, flame gamification, and penalty systems.",
+                feat_badge: "Unmatched Capabilities", feat_title: "Core Features", f1_title: "18 Minute Rule",
+                f1_desc: "Imposes a mandatory 18-minute friction delay before opening blocked apps.", f2_title: "Deep Work Timer",
+                f2_desc: "Pomodoro 2.0 system with strict lockdown modes and ambient sounds.", f3_title: "Kernel App Blocker",
+                f3_desc: "Block social media, games, and addictive apps system-wide.", f4_title: "Penalty Screen",
+                f4_desc: "Quitting a session early burns hard-earned Flame tokens.", f5_title: "Smart Planner",
+                f5_desc: "Automate work windows, study times, and night sleep locks.", f6_title: "Daily Streaks",
+                f6_desc: "Build streak momentum, earn flames, and compete globally.", learn_more: "Learn More", how_badge: "Simple Process",
+                how_title: "How Focusy Works", step1_title: "Select Apps", step1_desc: "Choose social media & games",
+                step2_title: "Set Timer", step2_desc: "Set 25, 50, or 90 minutes", step3_title: "Deep Work",
+                step3_desc: "Shield automatically activates", step4_title: "Earn Flames", step4_desc: "Collect rewards and level up",
+                demo_badge: "Live Interactive Simulator", demo_title: "Test 10-Second Focus Session", demo_ready: "Ready to test? Click start below.",
+                demo_btn: "Start 10s Demo", rank_badge: "Champions", rank_title: "Global Leaderboard", faq_title: "Frequently Asked Questions",
+                faq1_q: "What is Focusy?", faq1_a: "Focusy is a next-generation application designed to block social addictions.",
+                faq2_q: "How does the 18-minute rule work?", faq2_a: "It imposes an 18-minute delay requirement when you try to open blocked apps.",
+                faq3_q: "Is my personal data safe?", faq3_a: "Yes! Focusy operates 100% locally on your device with strict privacy protection.",
+                dl_title: "Ready to Change Your Life?", dl_subtitle: "Download Focusy today and reclaim thousands of hours of focus."
+            },
+            ru: {
+                nav_home: "Главная", nav_showcase: "Экран", nav_why: "Почему Focusy", nav_features: "Функции",
+                nav_how: "Как работает", nav_leaderboard: "Рейтинг", nav_faq: "FAQ", nav_download: "Скачать",
+                hero_badge: "✨ Будущее Цифровой Дисциплины", hero_title_1: "Верните Свою", hero_title_2: "Концентрацию.",
+                hero_subtitle: "Блокируйте зависимости, устраняйте отвлекающие факторы и входите в состояние глубокой работы.",
+                hero_watch_demo: "Смотреть Демо", stat_downloads_label: "Активных Скачиваний", stat_sessions_label: "Сессий Фокуса", stat_rating_label: "Оценка Пользователей",
+                custom_screen_title: "📸 Предпросмотр Своего Экрана", upload_btn: "Загрузить Скриншот (Upload)",
+                showcase_badge: "Интерактивный Опыт", showcase_title: "Экраны Приложения", tab_home: "Главная", tab_timer: "Таймер",
+                tab_planner: "Планер", tab_stats: "Статистика", tab_leaderboard: "Рейтинг", why_badge: "Наука и Решение",
+                why_title: "Почему Обычные Блокировщики Не Работают", why_card1_title: "Потеря Времени",
+                why_card1_desc: "В среднем пользователь проверяет телефон 144 раза в день, теряя более 4.5 часов.",
+                why_card2_title: "Дофаминовая Ловушка", why_card2_desc: "Уведомления и бесконечные ленты ослабляют внимание.",
+                why_card3_title: "Решение Focusy", why_card3_desc: "Задержки, ожоги Flame и система штрафов формируют дисциплину.",
+                feat_badge: "Возможности", feat_title: "Основные Функции", f1_title: "Правило 18 Минут",
+                f1_desc: "Вводит обязательную 18-минутную задержку перед открытием приложений.", f2_title: "Таймер Глубокой Работы",
+                f2_desc: "Система Pomodoro 2.0 и фоновые звуки концентрации.", f3_title: "Блокировщик Приложений",
+                f3_desc: "Полная блокировка соцсетей и игр на устройстве.", f4_title: "Экран Штрафа",
+                f4_desc: "Преждевременное завершение сжигает заработанные пламя-очки.", f5_title: "Умный Планировщик",
+                f5_desc: "Автоматическое расписание для работы и учебы.", f6_title: "Ежедневные Серии",
+                f6_desc: "Сохраняйте серии и поднимайтесь в мировом рейтинге.", learn_more: "Подробнее", how_badge: "Простой Процесс",
+                how_title: "Как Работает Focusy", step1_title: "Выберите Соцсети", step1_desc: "Отметьте отвлекающие приложения",
+                step2_title: "Задайте Таймер", step2_desc: "Укажите 25, 50 или 90 минут", step3_title: "Глубокая Работа",
+                step3_desc: "Блокировка включится автоматически", step4_title: "Получайте Очки", step4_desc: "Зарабатывайте Flame и повышайте уровень",
+                demo_badge: "Интерактивный Симулятор", demo_title: "10-Секундный Тестовый Сеанс", demo_ready: "Готовы протестировать? Нажмите старт ниже.",
+                demo_btn: "Запустить 10с Демо", rank_badge: "Чемпионы", rank_title: "Мировой Рейтинг", faq_title: "Часто Задаваемые Вопросы",
+                faq1_q: "Что такое Focusy?", faq1_a: "Focusy — это приложение нового поколения для устранения зависимости от смартфона.",
+                faq2_q: "Как работает правило 18 минут?", faq2_a: "При попытке открыть приложение включается 18-минутный таймер задержки.",
+                faq3_q: "Безопасны ли мои данные?", faq3_a: "Да! Focusy работает 100% локально на вашем устройстве без передачи данных.",
+                dl_title: "Готовы Изменить Свою Жизнь?", dl_subtitle: "Скачайте Focusy сегодня и верните тысячи часов концентрации."
+            }
+        };
+
+        function toggleLangMenu() {
+            document.getElementById('lang-dropdown').classList.toggle('hidden');
+        }
+
+        function setLanguage(lang) {
+            document.getElementById('lang-dropdown').classList.add('hidden');
+            const flags = { uz: '🇺🇿', en: '🇺🇸', ru: '🇷🇺' };
+            const texts = { uz: 'UZ', en: 'EN', ru: 'RU' };
+
+            document.getElementById('current-lang-flag').textContent = flags[lang];
+            document.getElementById('current-lang-text').textContent = texts[lang];
+
+            const dict = translations[lang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key]) {
+                    el.textContent = dict[key];
+                }
+            });
+        }
+
+        // 3. Carousel Showcase Switcher
+        const showcaseData = [
+            { icon: "layout-dashboard", title: "Bosh sahifa", val: "84% Diqqat Balli", tag: "ASOSIY FUNKSIYA", heading: "Bosh Sahifa va Statistika", desc: "Kunlik diqqat darajangiz, Olov ballaringiz, aktiv bloklar va rejalashtirilgan seanslarni real vaqt rejimida kuzatib boring." },
+            { icon: "timer", title: "Diqqat Taymeri", val: "25:00 Qoldi", tag: "POMODORO 2.0", heading: "Chuqur Ish Taymeri", desc: "Diqqat seanslarini faollashtiring va chalg'ituvchi ilovalarni mutlaqo bloklang." },
+            { icon: "calendar", title: "Aqlli Rejalashtirgich", val: "Bugun 4 ta seans", tag: "AVTOMATLASHTIRISH", heading: "Rejalashtirish Tizimi", desc: "Haftalik ish va o'qish vaqtlarini belgilang. Focusy avtomatik tarzda mos vaqtda ishga tushadi." },
+            { icon: "bar-chart-3", title: "Statistika", val: "+42% Unumdorlik", tag: "TAHLIL", heading: "Haftalik Statistika", desc: "Tegilgan vaqtlar, bloklangan ilovalar va kunlik intizom grafigini kuzating." },
+            { icon: "trophy", title: "Reyting", val: "Top #12 Global", tag: "JAMIYAT", heading: "Chempionlar Reytingi", desc: "Dunyo bo'ylab eng yaxshi intizomli foydalanuvchilar bilan bellashing." }
+        ];
+
+        function selectSlide(idx) {
+            document.querySelectorAll('.showcase-tab').forEach((tab, i) => {
+                if (i === idx) {
+                    tab.classList.add('border-neonPurple', 'bg-neonPurple/20', 'text-white');
+                    tab.classList.remove('text-gray-400');
+                } else {
+                    tab.classList.remove('border-neonPurple', 'bg-neonPurple/20', 'text-white');
+                    tab.classList.add('text-gray-400');
+                }
+            });
+
+            const data = showcaseData[idx];
+            document.getElementById('sc-title').textContent = data.title;
+            document.getElementById('sc-val').textContent = data.val;
+            document.getElementById('sc-tag').textContent = data.tag;
+            document.getElementById('sc-heading').textContent = data.heading;
+            document.getElementById('sc-desc').textContent = data.desc;
+            document.getElementById('sc-icon').innerHTML = `<i data-lucide="${data.icon}" class="w-10 h-10"></i>`;
+            
+            lucide.createIcons();
+        }
+
+        // 4. Modals Engine
+        function openFeatureModal(title, desc) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-desc').textContent = desc;
+            document.getElementById('feature-modal').classList.remove('hidden');
+        }
+
+        function closeFeatureModal() {
+            document.getElementById('feature-modal').classList.add('hidden');
+        }
+
+        function openVideoModal(url) {
+            const modal = document.getElementById('video-modal');
+            const videoEl = document.getElementById('video-player');
+            const iframe = document.getElementById('video-iframe');
+            const placeholder = document.getElementById('video-placeholder');
+
+            // reset
+            try { videoEl.pause(); } catch (e) {}
+            videoEl.classList.add('hidden');
+            iframe.classList.add('hidden');
+            placeholder.classList.add('hidden');
+            iframe.src = '';
+            videoEl.src = '';
+
+            if (url) {
+                const lower = url.toLowerCase();
+                if (/youtube\.com|youtu\.be|vimeo\.com/.test(lower)) {
+                    // extract YouTube ID and optional start time
+                    let id = null;
+                    const idMatch = url.match(/(?:youtube\.com.*(?:v=)|youtu\.be\/|youtube\.com\/embed\/)([0-9A-Za-z_-]{11})/);
+                    if (idMatch && idMatch[1]) id = idMatch[1];
+                    else {
+                        const gen = url.match(/([0-9A-Za-z_-]{11})/);
+                        if (gen) id = gen[1];
+                    }
+
+                    let start = null;
+                    const tMatch = url.match(/[?&]t=(\d+)s?/);
+                    if (tMatch) start = tMatch[1];
+                    else {
+                        const sMatch = url.match(/[?&]start=(\d+)/);
+                        if (sMatch) start = sMatch[1];
+                    }
+
+                    if (id) {
+                        let embed = 'https://www.youtube.com/embed/' + id + '?autoplay=1';
+                        if (start) embed += '&start=' + start;
+                        iframe.src = embed;
+                        iframe.classList.remove('hidden');
+                    } else {
+                        document.getElementById('video-placeholder').textContent = 'YouTube havolasi noto‘g‘ri.';
+                        document.getElementById('video-placeholder').classList.remove('hidden');
+                    }
+                } else {
+                    // Local or direct MP4 URL
+                    videoEl.src = url;
+                    videoEl.preload = 'metadata';
+                    // show placeholder until we know it's loadable
+                    placeholder.textContent = 'Video yuklanmoqda...';
+                    placeholder.classList.remove('hidden');
+
+                    // attach handlers
+                    videoEl.onerror = function() {
+                        placeholder.textContent = 'Video topilmadi yoki brauzer uni ocholmadi. assets/demo.mp4 ni joylaganingizni tekshiring.';
+                        placeholder.classList.remove('hidden');
+                        videoEl.classList.add('hidden');
+                        console.error('Video load error for', url);
+                    };
+
+                    videoEl.onloadeddata = function() {
+                        placeholder.classList.add('hidden');
+                        videoEl.classList.remove('hidden');
+                        videoEl.play().catch(()=>{});
+                    };
+
+                    videoEl.load();
+                }
+            } else {
+                placeholder.classList.remove('hidden');
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeVideoModal() {
+            const modal = document.getElementById('video-modal');
+            const videoEl = document.getElementById('video-player');
+            const iframe = document.getElementById('video-iframe');
+            try { videoEl.pause(); } catch (e) {}
+            iframe.src = '';
+            videoEl.src = '';
+            modal.classList.add('hidden');
+        }
+
+        // 5. Interactive Demo Engine
+        let demoInt;
+        function runDemo() {
+            const btn = document.getElementById('start-demo-btn');
+            const timerEl = document.getElementById('demo-timer');
+            const statusEl = document.getElementById('demo-status');
+
+            btn.disabled = true;
+            btn.classList.add('opacity-50');
+
+            let count = 10;
+            timerEl.textContent = "00:10";
+            statusEl.textContent = "⚡ Qalqon aktivlashdi! Bildirishnomalar o'chirildi...";
+
+            clearInterval(demoInt);
+            demoInt = setInterval(() => {
+                count--;
+                timerEl.textContent = `00:${count < 10 ? '0' + count : count}`;
+
+                if (count === 7) {
+                    statusEl.textContent = "🚫 Instagram-ni ochish urinishi bloklandi!";
+                } else if (count === 4) {
+                    statusEl.textContent = "🔥 18-daqiqalik kechiktirish rejimi ishlamoqda.";
+                } else if (count === 0) {
+                    clearInterval(demoInt);
+                    timerEl.textContent = "00:00";
+                    statusEl.textContent = "🎉 Seans yakunlandi! +25 Olov taqdirlandi!";
+                    btn.disabled = false;
+                    btn.classList.remove('opacity-50');
+                }
+            }, 1000);
+        }
+
+        // 6. Accordion Engine
+        function toggleFaq(btn) {
+            const content = btn.nextElementSibling;
+            content.classList.toggle('hidden');
+        }
+
+        // 7. Mouse Spotlight Motion
+        const spotlight = document.getElementById('spotlight');
+        window.addEventListener('mousemove', (e) => {
+            spotlight.style.left = e.clientX + 'px';
+            spotlight.style.top = e.clientY + 'px';
+        });
+
+        // 8. Background Particle System
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.8 + 0.4;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(123, 62, 255, 0.45)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 45; i++) particles.push(new Particle());
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // Standard load
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            setLanguage('uz');
+        });
+    </script>
+</body>
+</html>
